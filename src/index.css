@@ -64,15 +64,6 @@ h1, h2, h3, h4, h5, h6 {
 .btn-primary { background: var(--red); color: var(--white); }
 .btn-secondary { background: var(--card); color: var(--white); border: 1px solid var(--muted); }
 .btn-teal { background: var(--teal); color: var(--white); }
-.btn-google {
-  background: var(--white);
-  color: #333;
-  font-family: 'Roboto', sans-serif;
-  font-weight: 500;
-  text-transform: none;
-  letter-spacing: 0;
-}
-
 .screen {
   flex: 1;
   display: flex;
