@@ -8,7 +8,6 @@ export default function Auth({ session }) {
   const [showEmail, setShowEmail] = useState(false);
   const [error, setError] = useState('');
   const [loading, setLoading] = useState(false);
-  const [magicLinkSent, setMagicLinkSent] = useState(false);
 
   useEffect(() => {
     if (session) navigate('/lobby');
@@ -27,32 +26,43 @@ export default function Auth({ session }) {
     e.preventDefault();
     setLoading(true);
     setError('');
-    const { error } = await supabase.auth.signInWithOtp({
-      email,
-      options: { emailRedirectTo: window.location.origin + '/trivia/lobby' }
-    });
-    if (error) {
-      setError(error.message);
-    } else {
-      setMagicLinkSent(true);
+
+    // Auto sign-up with email + random password (no verification needed)
+    const autoPass = crypto.randomUUID();
+
+    // Try sign in first (returning player)
+    let { error: signInErr } = await supabase.auth.signInWithPassword({ email, password: autoPass });
+
+    if (signInErr) {
+      // New player — sign up
+      const { error: signUpErr } = await supabase.auth.signUp({
+        email,
+        password: autoPass,
+        options: { data: { display_name: email.split('@')[0] } }
+      });
+
+      if (signUpErr) {
+        // If email already exists with different password, it means they already played
+        if (signUpErr.message?.includes('already registered') || signUpErr.message?.includes('already been registered')) {
+          setError('Este email ya fue utilizado para jugar. Solo se permite un intento por email.');
+        } else {
+          setError(signUpErr.message);
+        }
+        setLoading(false);
+        return;
+      }
+
+      // Auto sign-in after signup
+      const { error: autoSignInErr } = await supabase.auth.signInWithPassword({ email, password: autoPass });
+      if (autoSignInErr) {
+        setError('Error al iniciar sesión. Intenta con Google.');
+        setLoading(false);
+        return;
+      }
     }
+
     setLoading(false);
   };
-
-  if (magicLinkSent) {
-    return (
-      <div className="screen fade-in">
-        <div style={{ fontSize: '3rem' }}>📩</div>
-        <h2 style={{ fontSize: '1.5rem' }}>Revisa tu email</h2>
-        <p style={{ color: 'var(--muted)', textAlign: 'center' }}>
-          Te enviamos un enlace a <strong style={{ color: 'var(--teal)' }}>{email}</strong> para comenzar a jugar.
-        </p>
-        <button className="btn btn-secondary" onClick={() => setMagicLinkSent(false)}>
-          ← Usar otro email
-        </button>
-      </div>
-    );
-  }
 
   return (
     <div className="screen fade-in">
@@ -72,7 +82,7 @@ export default function Auth({ session }) {
 
       {showEmail && (
         <form onSubmit={handleEmail} className="card" style={{ width: '100%', display: 'flex', flexDirection: 'column', gap: 12 }}>
-          <input type="email" placeholder="Email" value={email} onChange={e => setEmail(e.target.value)} required
+          <input type="email" placeholder="Tu email" value={email} onChange={e => setEmail(e.target.value)} required
             style={{ padding: 12, borderRadius: 8, border: '1px solid var(--muted)', background: 'var(--bg)', color: 'var(--white)', fontSize: '1rem' }} />
           <button type="submit" className="btn btn-teal" disabled={loading}>
             {loading ? 'Cargando...' : 'Comenzar a jugar'}
