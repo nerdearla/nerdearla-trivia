@@ -1,6 +1,7 @@
 import { useState, useEffect, useRef, useCallback } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { supabase } from '../lib/supabase';
+import { trackEvent } from '../lib/analytics';
 
 const TIMER_SECONDS = 15;
 const TOTAL_QUESTIONS = 20;
@@ -72,6 +73,7 @@ export default function Game({ session }) {
     setSessionId(gs.id);
     setLoading(false);
     startTimeRef.current = Date.now();
+    trackEvent('trivia_start');
   };
 
   // Timer
@@ -135,6 +137,7 @@ export default function Game({ session }) {
         setFeedback(null);
         setSelected(null);
       } else {
+        trackEvent('trivia_complete', { score: score, correct_answers: correctCount });
         navigate('/results');
       }
     }, 1200);

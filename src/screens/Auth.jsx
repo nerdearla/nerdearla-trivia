@@ -1,6 +1,7 @@
 import { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { supabase } from '../lib/supabase';
+import { trackEvent } from '../lib/analytics';
 
 export default function Auth({ session }) {
   const navigate = useNavigate();
@@ -32,6 +33,7 @@ export default function Auth({ session }) {
     }
 
     // New player — sign up
+    trackEvent('trivia_signup');
     const { error: signUpErr } = await supabase.auth.signUp({
       email: normalizedEmail,
       password: autoPass,
