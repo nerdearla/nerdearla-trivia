@@ -15,7 +15,7 @@ INSERT INTO questions (question, option_a, option_b, option_c, option_d, correct
 ('¿Qué característica de ES6 permite extraer valores de arrays en variables?', 'Spread operator', 'Destructuring', 'Template literals', 'Arrow functions', 'B', 'javascript', 'easy'),
 -- Nerdearla
 ('¿En qué año se fundó Nerdearla?', '2012', '2014', '2016', '2018', 'B', 'nerdearla', 'easy'),
-('¿En qué países se ha realizado Nerdearla?', 'AR, BR, MX, CL', 'AR, CL, MX, ES', 'AR, CO, PE, CL', 'AR, UY, BR, MX', 'B', 'nerdearla', 'medium'),
+('¿En qué países se ha realizado Nerdearla?', '🇦🇷 🇧🇷 🇲🇽 🇨🇱', '🇦🇷 🇨🇱 🇲🇽 🇪🇸', '🇦🇷 🇨🇴 🇵🇪 🇨🇱', '🇦🇷 🇺🇾 🇧🇷 🇲🇽', 'B', 'nerdearla', 'medium'),
 ('¿Cuál es el venue principal de Nerdearla en Buenos Aires?', 'Teatro Colón', 'Centro Cultural Konex', 'Luna Park', 'Usina del Arte', 'B', 'nerdearla', 'easy'),
 ('¿Qué creador de UNIX fue speaker en Nerdearla?', 'Dennis Ritchie', 'Ken Thompson', 'Brian Kernighan', 'Linus Torvalds', 'B', 'nerdearla', 'hard'),
 ('¿Qué creador de CSS dio una charla en Nerdearla?', 'Brendan Eich', 'Tim Berners-Lee', 'Håkon Wium Lie', 'Eric Meyer', 'C', 'nerdearla', 'hard'),
