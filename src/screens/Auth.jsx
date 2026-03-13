@@ -5,10 +5,10 @@ import { supabase } from '../lib/supabase';
 export default function Auth({ session }) {
   const navigate = useNavigate();
   const [email, setEmail] = useState('');
-  const [password, setPassword] = useState('');
   const [showEmail, setShowEmail] = useState(false);
   const [error, setError] = useState('');
   const [loading, setLoading] = useState(false);
+  const [magicLinkSent, setMagicLinkSent] = useState(false);
 
   useEffect(() => {
     if (session) navigate('/lobby');
@@ -27,14 +27,32 @@ export default function Auth({ session }) {
     e.preventDefault();
     setLoading(true);
     setError('');
-    let { error } = await supabase.auth.signInWithPassword({ email, password });
-    if (error?.message?.includes('Invalid login')) {
-      const res = await supabase.auth.signUp({ email, password });
-      error = res.error;
+    const { error } = await supabase.auth.signInWithOtp({
+      email,
+      options: { emailRedirectTo: window.location.origin + '/trivia/lobby' }
+    });
+    if (error) {
+      setError(error.message);
+    } else {
+      setMagicLinkSent(true);
     }
-    if (error) setError(error.message);
     setLoading(false);
   };
+
+  if (magicLinkSent) {
+    return (
+      <div className="screen fade-in">
+        <div style={{ fontSize: '3rem' }}>📩</div>
+        <h2 style={{ fontSize: '1.5rem' }}>Revisa tu email</h2>
+        <p style={{ color: 'var(--muted)', textAlign: 'center' }}>
+          Te enviamos un enlace a <strong style={{ color: 'var(--teal)' }}>{email}</strong> para comenzar a jugar.
+        </p>
+        <button className="btn btn-secondary" onClick={() => setMagicLinkSent(false)}>
+          ← Usar otro email
+        </button>
+      </div>
+    );
+  }
 
   return (
     <div className="screen fade-in">
@@ -56,10 +74,8 @@ export default function Auth({ session }) {
         <form onSubmit={handleEmail} className="card" style={{ width: '100%', display: 'flex', flexDirection: 'column', gap: 12 }}>
           <input type="email" placeholder="Email" value={email} onChange={e => setEmail(e.target.value)} required
             style={{ padding: 12, borderRadius: 8, border: '1px solid var(--muted)', background: 'var(--bg)', color: 'var(--white)', fontSize: '1rem' }} />
-          <input type="password" placeholder="Contraseña" value={password} onChange={e => setPassword(e.target.value)} required minLength={6}
-            style={{ padding: 12, borderRadius: 8, border: '1px solid var(--muted)', background: 'var(--bg)', color: 'var(--white)', fontSize: '1rem' }} />
           <button type="submit" className="btn btn-teal" disabled={loading}>
-            {loading ? 'Cargando...' : 'Iniciar sesión / Registrarse'}
+            {loading ? 'Cargando...' : 'Comenzar a jugar'}
           </button>
         </form>
       )}
