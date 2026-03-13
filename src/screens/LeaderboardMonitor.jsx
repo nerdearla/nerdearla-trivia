@@ -35,7 +35,7 @@ export default function LeaderboardMonitor() {
   const loadLeaderboard = async () => {
     const { data } = await supabase
       .from('game_sessions')
-      .select('score, correct_answers, finished_at, player_id, players(display_name, avatar_url)')
+      .select('score, correct_answers, finished_at, player_id, players(display_name, email, avatar_url)')
       .not('finished_at', 'is', null)
       .order('score', { ascending: false })
       .limit(20);
@@ -87,7 +87,8 @@ export default function LeaderboardMonitor() {
               </div>
               <div style={{ flex: 1 }}>
                 <div style={{ fontWeight: 700 }}>{e.players?.display_name || 'Jugador'}</div>
-                <div style={{ color: '#929292', fontSize: '0.8em' }}>{e.correct_answers}/20 correctas</div>
+                <div style={{ color: '#00ACA8', fontSize: '0.75em' }}>{e.players?.email || ''}</div>
+                <div style={{ color: '#929292', fontSize: '0.7em' }}>{e.correct_answers}/20 correctas</div>
               </div>
               <div style={{
                 fontWeight: 700, color: '#FFBA00', fontSize: i < 3 ? '2rem' : '1.3rem',

@@ -16,9 +16,9 @@ export default function Lobby({ session }) {
     const user = session.user;
     await supabase.from('players').upsert({
       id: user.id,
-      display_name: user.user_metadata?.full_name || user.email?.split('@')[0] || 'Jugador',
-      email: user.email,
-      avatar_url: user.user_metadata?.avatar_url || null,
+      display_name: user.user_metadata?.display_name || user.email?.split('@')[0] || 'Jugador',
+      email: user.email || '',
+      avatar_url: null,
     }, { onConflict: 'id' });
 
     const { data } = await supabase
