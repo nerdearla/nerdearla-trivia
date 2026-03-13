@@ -179,7 +179,7 @@ export default function Game({ session }) {
       {/* Question */}
       <div className="card" style={{ width: '100%', textAlign: 'center' }}>
         <span style={{ color: 'var(--teal)', fontSize: '0.8rem', textTransform: 'uppercase', marginBottom: 8, display: 'block' }}>
-          {q.category} • {q.difficulty}
+          {q.category}
         </span>
         <p style={{ fontSize: '1.1rem', lineHeight: 1.4 }}>{q.question}</p>
       </div>
@@ -190,7 +190,7 @@ export default function Game({ session }) {
           let bg = 'var(--card)';
           let border = '1px solid transparent';
           if (feedback) {
-            if (opt.key === q.correct_option) {
+            if (opt.key === feedback.correctOption) {
               bg = 'var(--teal)';
             } else if (opt.key === selected && !feedback.correct) {
               bg = 'var(--red)';
