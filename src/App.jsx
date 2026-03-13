@@ -27,7 +27,7 @@ function App() {
   if (loading) return <div className="screen"><div style={{ color: 'var(--muted)' }}>Loading...</div></div>;
 
   return (
-    <BrowserRouter basename="/trivia">
+    <BrowserRouter basename="/">
       <Routes>
         <Route path="/" element={<Landing session={session} />} />
         <Route path="/auth" element={<Auth session={session} />} />
