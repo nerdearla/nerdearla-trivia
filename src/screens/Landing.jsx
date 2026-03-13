@@ -6,9 +6,8 @@ export default function Landing({ session }) {
   return (
     <div className="screen fade-in">
       <div style={{ textAlign: 'center' }}>
-        <div style={{ fontSize: '3rem', marginBottom: 8 }}>🧠</div>
+        <img src="/logo-nerdearla.png" alt="Nerdearla" style={{ width: '80%', maxWidth: 320, marginBottom: 12 }} />
         <h1 style={{ fontSize: '2.5rem', lineHeight: 1.1, marginBottom: 8 }}>
-          <span style={{ color: 'var(--red)' }}>Nerdearla</span><br />
           <span style={{ color: 'var(--yellow)' }}>Trivia</span>
         </h1>
         <p style={{ color: 'var(--muted)', fontSize: '1rem' }}>
