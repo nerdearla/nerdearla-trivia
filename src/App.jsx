@@ -29,12 +29,12 @@ function App() {
   return (
     <BrowserRouter basename="/">
       <Routes>
-        <Route path="/" element={<Landing session={session} />} />
-        <Route path="/auth" element={<Auth session={session} />} />
-        <Route path="/lobby" element={<Lobby session={session} />} />
-        <Route path="/game" element={<Game session={session} />} />
-        <Route path="/results" element={<Results session={session} />} />
-        <Route path="/leaderboard" element={<Leaderboard session={session} />} />
+        <Route path="/" element={<Landing />} />
+        <Route path="/auth" element={<Landing />} />
+        <Route path="/lobby" element={<Landing />} />
+        <Route path="/game" element={<Landing />} />
+        <Route path="/results" element={<Landing />} />
+        <Route path="/leaderboard" element={<Landing />} />
         <Route path="/monitor" element={<LeaderboardMonitor />} />
       </Routes>
     </BrowserRouter>
